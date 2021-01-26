@@ -7,7 +7,7 @@ router.post('/', async function(req, res, next) {
 
   var today = new Date();
   var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
-  var time = (today.getHours().toLocaleString()-3) + ":" + today.getMinutes().toLocaleString() + ":" + today.getSeconds().toLocaleString();  
+  var time = today.getUTCHours() + ":" + today.getMinutes().toLocaleString() + ":" + today.getSeconds().toLocaleString();  
   
   
   let posts = await Data.insert(req.query.longitude, req.query.latitude, req.query.velocity,date, time);
