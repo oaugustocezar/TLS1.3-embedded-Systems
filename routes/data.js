@@ -5,8 +5,8 @@ var Data = require('../model/db');
 /* GET home page. */
 router.post('/', async function(req, res, next) {
 
-  var today = new Date();
-  var date = today.getDate().toLocaleString()+'-'+(today.getMonth()+1).toLocaleString()+'-'+today.getFullYear();
+  var today = new Date().toUTCString();
+  var date = today.getDate()+'-'+(today.getMonth()+1).toLocaleString()+'-'+today.getFullYear();
   var time = today.getHours().toLocaleString() + ":" + today.getMinutes().toLocaleString() + ":" + today.getSeconds().toLocaleString();  
   
   
