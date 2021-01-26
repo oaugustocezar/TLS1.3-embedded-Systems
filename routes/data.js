@@ -6,8 +6,8 @@ var Data = require('../model/db');
 router.post('/', async function(req, res, next) {
 
   var today = new Date();
-  var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
-  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();  
+  var date = today.getDate().toLocaleString()+'-'+(today.getMonth()+1).toLocaleString()+'-'+today.getFullYear();
+  var time = today.getHours().toLocaleString() + ":" + today.getMinutes().toLocaleString() + ":" + today.getSeconds().toLocaleString();  
   
   
   let posts = await Data.insert(req.query.longitude, req.query.latitude, req.query.velocity,date, time);
