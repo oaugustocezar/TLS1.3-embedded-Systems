@@ -16,16 +16,8 @@ var fs = require ('fs');
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
 
-
- const options = {
-  key: fs.readFileSync('bin/server-key.pem'),
-  cert: fs.readFileSync('bin/server-cert.pem')
-  };
-var server = https.createServer(options,app);
+var server = https.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
