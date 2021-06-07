@@ -21,6 +21,16 @@ module.exports = class Posts{
         return result;
     }
 
+    static async findByDispositivo(dispositivo){
+        const conn = await MongoClient.connect(url);
+        const db = conn.db();
+        let result = await db.collection('information').find({
+            dispositivo : dispositivo
+        }).toArray();
+        return result;
+
+    }
+
     static async select(){
         const conn = await MongoClient.connect(url);
         const db = conn.db();

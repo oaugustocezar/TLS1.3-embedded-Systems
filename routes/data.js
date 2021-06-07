@@ -14,6 +14,7 @@ router.post('/', async function(req, res, next) {
 
 });
 
+
 router.post('/hstime', async function(req,res,next){
   let posts = await Data.insertHsTime(res.req.body.dispositivo,res.req.body.t0Handshake,res.req.body.t1Handshake);
   res.status(200).json({"mensagem": "Tempo do handshake inserido com sucesso"});
@@ -27,10 +28,14 @@ router.post('/commtime', async function(req,res,next){
 });
 
 router.get('/', async function(req,res,next){
+  if(req.query.dispositivo){
+    let get = await Data.findByDispositivo(req.query.dispositivo);  
+    res.json(get);
+  }else{
+    let get = await Data.select();
+    res.json(get);
+  }  
 
-  let get = await Data.select();  
-  res.json(get);
-  
 });
 
 
