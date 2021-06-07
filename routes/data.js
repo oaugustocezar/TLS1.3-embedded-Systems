@@ -7,23 +7,30 @@ router.post('/', async function(req, res, next) {
 
   var today = new Date();
   var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
-  var time = (today.getHours()) + ":" + today.getMinutes() + ":" + today.getSeconds();  
-
-  console.log(res.req);
-  
-  
-  let posts = await Data.insert(res.req.body.latitude, res.req.body.longitude, res.req.body.velocity,date, time);
+  var time = (today.getHours()) + ":" + today.getMinutes() + ":" + today.getSeconds();
+  console.log(res.req); 
+  let posts = await Data.insert(res.req.body.dispositivo,res.req.body.latitude, res.req.body.longitude, res.req.body.velocity,date, time);
   res.status(200).json({"mensagem": "Mensagem postada com sucesso"});
 
+});
+
+router.post('/hstime', async function(req,res,next){
+  let posts = await Data.insertHsTime(res.req.body.dispositivo,res.req.body.t0Handshake,res.req.body.t1Handshake);
+  res.status(200).json({"mensagem": "Tempo do handshake inserido com sucesso"});
+});
+
+router.post('/commtime', async function(req,res,next){
+
+  let posts = await Data.insertCommTime(res.req.body.dispositivo,res.req.body.t0,res.req.body.t1);
+  res.status(200).json({"mensagem": "Tempo da comunicação inserida com sucesso"});
 
 });
 
 router.get('/', async function(req,res,next){
 
-  let get = await Data.select();
-
-  
+  let get = await Data.select();  
   res.json(get);
+  
 });
 
 
