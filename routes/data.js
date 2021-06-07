@@ -12,7 +12,7 @@ router.post('/', async function(req, res, next) {
   console.log(res.req);
   
   
-  let posts = await Data.insert(res.req.body.longitude, res.req.body.latitude, res.req.body.velocity,date, time);
+  let posts = await Data.insert(res.req.body.latitude, res.req.body.longitude, res.req.body.velocity,date, time);
   res.status(200).json({"mensagem": "Mensagem postada com sucesso"});
 
 
