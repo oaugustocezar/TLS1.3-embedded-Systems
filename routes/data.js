@@ -15,8 +15,9 @@ router.post('/', async function(req, res, next) {
 });
 
 
+
 router.post('/hstime', async function(req,res,next){
-  let posts = await Data.insertHsTime(res.req.body.dispositivo,res.req.body.t0Handshake,res.req.body.t1Handshake);
+  let posts = await Data.insertHsTime(res.req.body.dispositivo,res.req.body.ciphersuit, res.req.body.t0Handshake,res.req.body.t1Handshake);
   res.status(200).json({"mensagem": "Tempo do handshake inserido com sucesso"});
 });
 

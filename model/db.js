@@ -15,26 +15,24 @@ module.exports = class Posts{
             date : date,
             time : time
         });
-
         conn.close();
-
         return result;
     }
-
-    static async findByDispositivo(dispositivo){
+    static async findByDispositivo(dispositivo,ciphersuit){
         const conn = await MongoClient.connect(url);
         const db = conn.db();
         let result = await db.collection('information').find({
-            dispositivo : dispositivo
+            dispositivo : dispositivo,
+            ciphersuit:ciphersuit
         }).toArray();
+        conn.close();
         return result;
-
     }
+
 
     static async select(){
         const conn = await MongoClient.connect(url);
-        const db = conn.db();
-       
+        const db = conn.db();       
         let result = await db.collection('information').find().toArray();
         conn.close();
         return result;
@@ -43,24 +41,38 @@ module.exports = class Posts{
 
     static async selectByDate(date){
         const conn = await MongoClient.connect(url);
-        const db = conn.db();
-       
+        const db = conn.db();       
         let result = await db.collection('information').find(date).toArray();
         conn.close();
         return result;
-
     }
 
-    static async insertHsTime(dispositivo,ths0,ths1){
+    static async insertHsTime(dispositivo,ths0,ths1,ciphersuit){
         const conn  = await MongoClient.connect(url);
         const db = conn.db();
         let result = await db.collection('metricasHS').insertOne({
             dispositivo : dispositivo,
+            ciphersuit:ciphersuit,
             t0Handshake : ths0,
             t1Handshake : ths1
         });
         conn.close();
         return result;
+    }
+
+    static async getHsTime(dispositivo, ciphersuit){
+        const conn  = await MongoClient.connect(url);
+        const db = conn.db();
+        if(ciphersuit){
+            let result = await db.collection('metricasHS').find({
+                dispositivo:dispositivo,
+                ciphersuit:ciphersuit
+            }).toArray();
+        }else{
+            let result = await db.collection('metricasHS').find().toArray();
+        } 
+        conn.close();
+        return result;   
     }
 
     static async insertCommTime(dispositivo,t0,t1){
@@ -75,8 +87,16 @@ module.exports = class Posts{
         return result;
     }
 
-    static async getCommTime(){
-
+    static async getCommTime(dispositivo,ciphersuit){
+        const conn  = await MongoClient.connect(url);
+        const db = conn.db();
+        if(dispositivo){
+            let result = await db.collection('metricas').find({
+                dispositivo:dispositivo,
+                ciphersuit:ciphersuit
+            })
+        }
+        
     }
 }
 
