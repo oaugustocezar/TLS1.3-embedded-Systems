@@ -1,6 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 
-const url = "mongodb+srv://admin:admin@cluster0.zikk2.mongodb.net/application?retryWrites=true&w=majority";
+const url = process.env.BDAPP;
 
 module.exports = class Posts{
 
