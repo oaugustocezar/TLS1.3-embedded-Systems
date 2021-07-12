@@ -38,6 +38,11 @@ router.get('/', async function(req,res,next){
   }  
 
 });
+router.get('/hstime',async function(req,res,next){  
+  let get = await Data.getHsTime();
+  console.log(get)
+  res.json(get);
+});
 
 
 router.get('/date',async function(req, res, next){  

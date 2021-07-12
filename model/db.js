@@ -1,6 +1,8 @@
 const MongoClient = require('mongodb').MongoClient;
 
-const url = process.env.BDAPP;
+//const url = process.env.BDAPP;
+
+const url ="mongodb+srv://admin:admin@cluster0.zikk2.mongodb.net/application?retryWrites=true&w=majority";
 
 module.exports = class Posts{
 
@@ -62,16 +64,11 @@ module.exports = class Posts{
 
     static async getHsTime(dispositivo, ciphersuit){
         const conn  = await MongoClient.connect(url);
-        const db = conn.db();
-        if(ciphersuit){
-            let result = await db.collection('metricasHS').find({
-                dispositivo:dispositivo,
-                ciphersuit:ciphersuit
-            }).toArray();
-        }else{
-            let result = await db.collection('metricasHS').find().toArray();
-        } 
+        const db = conn.db();       
+        let result = await db.collection('metricasHS').find().toArray();
+        
         conn.close();
+        console.log(result)
         return result;   
     }
 
