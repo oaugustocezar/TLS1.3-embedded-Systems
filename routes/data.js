@@ -9,7 +9,7 @@ router.post('/', async function(req, res, next) {
   var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
   var time = (today.getHours()) + ":" + today.getMinutes() + ":" + today.getSeconds();
   console.log(res.req); 
-  let posts = await Data.insert(res.req.body.dispositivo,res.req.body.latitude, res.req.body.longitude, res.req.body.velocity,date, time);
+  let posts = await Data.insert(res.req.body.dispositivo,res.req.body.ciphersuit,res.req.body.latitude, res.req.body.longitude, res.req.body.velocity,date, time);
   res.status(200).json({"mensagem": "Mensagem postada com sucesso"});
 
 });
@@ -24,7 +24,7 @@ router.post('/hstime', async function(req,res,next){
 
 router.post('/commtime', async function(req,res,next){
 
-  let posts = await Data.insertCommTime(res.req.body.dispositivo,res.req.body.t0,res.req.body.t1);
+  let posts = await Data.insertCommTime(res.req.body.dispositivo,res.req.body.ciphersuit,res.req.body.t0,res.req.body.t1);
   res.status(200).json({"mensagem": "Tempo da comunicação inserida com sucesso"});
 
 });

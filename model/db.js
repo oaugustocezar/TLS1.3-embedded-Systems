@@ -6,11 +6,12 @@ const url ="mongodb+srv://admin:admin@cluster0.zikk2.mongodb.net/application?ret
 
 module.exports = class Posts{
 
-    static async insert(dispositivo,latitude, longitude, velocity, date, time){
+    static async insert(dispositivo,ciphersuit,latitude, longitude, velocity, date, time){
         const conn = await MongoClient.connect(url);
         const db = conn.db();
         let result = await db.collection('information').insertOne({
             dispositivo: dispositivo,
+            ciphersuit: ciphersuit,
             latitude : latitude, 
             longitude : longitude,
             velocity : velocity,
@@ -72,11 +73,12 @@ module.exports = class Posts{
         return result;   
     }
 
-    static async insertCommTime(dispositivo,t0,t1){
+    static async insertCommTime(dispositivo,ciphersuit,t0,t1){
         const conn  = await MongoClient.connect(url);
         const db = conn.db();
         let result = await db.collection('metricas').insertOne({
             dispositivo: dispositivo,
+            ciphersuit: ciphersuit,
             t0 : t0, 
             t1 : t1
         });
