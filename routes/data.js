@@ -10,6 +10,7 @@ router.post('/', async function(req, res, next) {
   var time = (today.getHours()) + ":" + today.getMinutes() + ":" + today.getSeconds();
   console.log(res.req); 
   let posts = await Data.insert(res.req.body.dispositivo,res.req.body.ciphersuit,res.req.body.latitude, res.req.body.longitude, res.req.body.velocity,date, time);
+  console.log(res.req.body.ciphersuit);
   res.status(200).json({"mensagem": "Mensagem postada com sucesso"});
 
 });
