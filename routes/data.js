@@ -32,7 +32,7 @@ router.post('/commtime', async function(req,res,next){
 
 router.get('/', async function(req,res,next){
   if(req.query.dispositivo){
-    let get = await Data.findByDispositivo(req.query.dispositivo);  
+    let get = await Data.findByDispositivo(req.query.dispositivo,req.query.ciphersuit);  
     res.json(get);
   }else{
     let get = await Data.select();
@@ -40,8 +40,15 @@ router.get('/', async function(req,res,next){
   }  
 
 });
+
 router.get('/hstime',async function(req,res,next){  
-  let get = await Data.getHsTime();
+  let get = await Data.getHsTime(req.query.dispositivo,req.query.ciphersuit);
+  console.log(get)
+  res.json(get);
+});
+
+router.get('/commtime',async function(req,res,next){  
+  let get = await Data.getCommTime(req.query.dispositivo,req.query.ciphersuit);
   console.log(get)
   res.json(get);
 });

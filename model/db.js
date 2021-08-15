@@ -65,11 +65,21 @@ module.exports = class Posts{
 
     static async getHsTime(dispositivo, ciphersuit){
         const conn  = await MongoClient.connect(url);
-        const db = conn.db();       
-        let result = await db.collection('metricasHS').find().toArray();
-        
+        const db = conn.db(); 
+        let result; 
+        if(dispositivo){
+            result = await db.collection('metricasHS').find({
+                dispositivo : dispositivo,
+                ciphersuit:ciphersuit
+            }).toArray();   
+
+        }else{
+            result = await db.collection('metricasHS').find().toArray();
+        }
+       
+            
         conn.close();
-        console.log(result)
+       
         return result;   
     }
 
@@ -88,13 +98,22 @@ module.exports = class Posts{
 
     static async getCommTime(dispositivo,ciphersuit){
         const conn  = await MongoClient.connect(url);
-        const db = conn.db();
+        const db = conn.db(); 
+        let result; 
         if(dispositivo){
-            let result = await db.collection('metricas').find({
-                dispositivo:dispositivo,
+            result = await db.collection('metricas').find({
+                dispositivo : dispositivo,
                 ciphersuit:ciphersuit
-            })
+            }).toArray();   
+
+        }else{
+            result = await db.collection('metricasHS').find().toArray();
         }
+       
+            
+        conn.close();
+        console.log(result)
+        return result;   
         
     }
 }
