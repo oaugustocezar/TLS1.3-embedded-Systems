@@ -6,30 +6,104 @@
 
 var app = require('../app');
 var debug = require('debug')('backend-server:server');
-var http = require('http');
+/* --------------------------*/
+
+const https = require("https")
+const fs = require("fs");
+const forge = require('node-forge')
+    forge.options.usePureJavaScript = true 
+
+var pki = forge.pki;
+var keys = pki.rsa.generateKeyPair(2048);
+var cert = pki.createCertificate();
+
+cert.publicKey = keys.publicKey;
+cert.serialNumber = '01';
+cert.validity.notBefore = new Date();
+cert.validity.notAfter = new Date();
+cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear()+1);
+
+var attrs = [{
+    name: 'commonName',
+    value: 'www.cooltest.site'
+  }, {
+    name: 'countryName',
+    value: 'US'
+  }, {
+    shortName: 'ST',
+    value: 'Illinois'
+  }, {
+    name: 'localityName',
+    value: 'Downers Grove'
+  }, {
+    name: 'organizationName',
+    value: 'Test'
+  }, {
+    shortName: 'OU',
+    value: 'Test'
+  }];
+cert.setSubject(attrs);
+cert.setIssuer(attrs);
+cert.setExtensions([{
+    name: 'basicConstraints',
+    cA: true
+  }, {
+    name: 'keyUsage',
+    keyCertSign: true,
+    digitalSignature: true,
+    nonRepudiation: true,
+    keyEncipherment: true,
+    dataEncipherment: true
+  }, {
+    name: 'extKeyUsage',
+    serverAuth: true,
+    clientAuth: true,
+    codeSigning: true,
+    emailProtection: true,
+    timeStamping: true
+  }, {
+    name: 'nsCertType',
+    client: true,
+    server: true,
+    email: true,
+    objsign: true,
+    sslCA: true,
+    emailCA: true,
+    objCA: true
+  }, {
+    name: 'subjectAltName',
+    altNames: [{
+      type: 6, // URI
+      value: 'http://www.mycooltest.site'
+    }, {
+      type: 7, // IP
+      ip: '127.0.0.1'
+    }]
+  }, {
+    name: 'subjectKeyIdentifier'
+  }]);
+cert.sign(keys.privateKey);
+
+var private_key = pki.privateKeyToPem(keys.privateKey);
+var public_key = pki.certificateToPem(cert);
+
+/* ---------------------------*/
 
 
-/**
- * Get port from environment and store in Express.
- */
+const options = {
+  key: private_key,
+  cert: public_key
+  // In case you already have the keys available to you
+  // key: fs.readFileSync("key.pem"),
+  // cert: fs.readFileSync("chain.pem")
+};
+//const app = express();
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
 
-
-/*const options = {
-  key: fs.readFileSync('bin/server-key.pem'),
-  cert: fs.readFileSync('bin/server-cert.pem')
-  };*/
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
+var server = https.createServer(options,app);
 
 server.listen(port);
 server.on('error', onError);
